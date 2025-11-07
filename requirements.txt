@@ -21,7 +21,7 @@ cv2
 #easyocr
 #opencv-python
 opencv-python==4.6.0.66
-rich==13.7.1
+rich>=10.14.0
 
 
 easyocr==1.7.1
