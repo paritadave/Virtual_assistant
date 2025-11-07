@@ -1,30 +1,19 @@
-# Core
-streamlit
+streamlit>=1.32.0
 pandas
-numpy
-pillow
-opencv-python
-
-# OCR & NLP
-easyocr
-torch
+PyPDF2
+openpyxl
+faiss-cpu
 transformers
-huggingface_hub
+sentence-transformers
+langchain
+langchain-community
+python-docx
+langchain-huggingface
+hf_xet
+llama-index-core==0.10.30
+llama-index-readers-file
+llama-index-llms-huggingface
+llama-index-embeddings-huggingface
+accelerate
+torch
 
-# Data Visualization & Dashboarding
-plotly
-matplotlib
-seaborn
-
-# Email, Automation & Integration
-smtplib
-requests
-
-# Utilities
-python-dotenv
-scikit-learn
-tqdm
-
-# Optional (for better OCR accuracy / image handling)
-pdf2image
-pytesseract
