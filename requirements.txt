@@ -19,3 +19,4 @@ torch
 docx2txt
 cv2
 easyocr
+opencv-python
