@@ -19,4 +19,5 @@ torch
 docx2txt
 cv2
 easyocr
-opencv-python
+#opencv-python
+opencv-python==4.6.0.66
