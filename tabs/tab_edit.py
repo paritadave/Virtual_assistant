@@ -34,7 +34,7 @@ def editorial_support(text, goal):
 
 def show_edit_tab():
     st.subheader("✍️ Editorial Support")
-    st.markdown("Refine and polish your writing using AI.")
+    st.markdown("Refine and polish your writing.")
 
     uploaded_edit = st.file_uploader("📎 Upload a file (.txt, .pdf, .docx)", type=["txt", "pdf", "docx"])
     default_edit_text = ""
@@ -54,9 +54,10 @@ def show_edit_tab():
 
     if st.button("✨ Enhance Text"):
         if raw_text.strip():
-            with st.spinner("Improving text with GPT..."):
+            with st.spinner("Improving text..."):
                 improved = editorial_support(raw_text, goal)
             st.success("✅ Enhanced Text Ready!")
             st.text_area("📘 Refined Output", improved, height=300)
         else:
             st.warning("⚠️ Please provide text for editing.")
+
