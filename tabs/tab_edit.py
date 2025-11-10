@@ -1,10 +1,12 @@
 import streamlit as st
-import docx2txt
+import os
+from openai import OpenAI
 from PyPDF2 import PdfReader
+import docx2txt
 
-# --- Helper: extract text from uploaded files ---
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 def extract_uploaded_text(uploaded_file):
-    """Extract text from .txt, .pdf, or .docx files."""
     text = ""
     if uploaded_file.name.endswith(".txt"):
         text = uploaded_file.read().decode("utf-8")
@@ -15,70 +17,46 @@ def extract_uploaded_text(uploaded_file):
         text = docx2txt.process(uploaded_file)
     return text.strip()
 
-
-# --- Text refinement logic ---
 def editorial_support(text, goal):
-    """Apply basic editing based on selected goal."""
-    improved = text.strip()
+    """Use GPT to improve the text."""
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are an expert writing assistant."},
+                {"role": "user", "content": f"Improve this text with the goal: {goal}.\n\n{text}"}
+            ],
+            temperature=0.5,
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        return f"⚠️ Error: {e}"
 
-    if goal == "Make it concise":
-        words = improved.split()
-        improved = " ".join(words[:100]) + ("..." if len(words) > 100 else "")
-
-    elif goal == "Improve grammar":
-        # Simple grammar placeholder — can be replaced with AI later
-        improved = improved.replace("i ", "I ").replace(" dont ", " don't ").replace(" cant ", " can't ")
-
-    elif goal == "Enhance tone":
-        improved = improved.replace("sorry", "I apologize").replace("please", "kindly")
-
-    elif goal == "Make it persuasive":
-        improved = improved + "\n\nI truly believe this will make a positive impact!"
-
-    return improved
-
-
-# --- Download helper ---
-def get_text_download_link(text, filename):
-    """Generate a Streamlit download button for text content."""
-    st.download_button("📥 Download Enhanced Text", text, file_name=filename)
-
-
-# --- Streamlit UI ---
 def show_edit_tab():
     st.subheader("✍️ Editorial Support")
-    st.markdown("Refine your writing — make it concise, polished, and impactful.")
+    st.markdown("Refine and polish your writing using AI.")
 
-    uploaded_edit = st.file_uploader(
-        "📎 Upload a file (.txt, .pdf, .docx)",
-        type=["txt", "pdf", "docx"],
-        key="edit_upload"
-    )
-
+    uploaded_edit = st.file_uploader("📎 Upload a file (.txt, .pdf, .docx)", type=["txt", "pdf", "docx"])
     default_edit_text = ""
+
     if uploaded_edit:
         with st.spinner("📖 Extracting text..."):
             default_edit_text = extract_uploaded_text(uploaded_edit)
 
-    raw_text = st.text_area(
-        "📝 Enter or paste your text (blog, proposal, email, etc.)",
-        value=default_edit_text,
-        height=250,
-        key="edit_text"
-    )
+    raw_text = st.text_area("📝 Enter or paste your text", value=default_edit_text, height=250)
+    goal = st.selectbox("🎯 Editing Goal", [
+        "Make it concise",
+        "Improve grammar",
+        "Enhance tone",
+        "Make it persuasive",
+        "Simplify language"
+    ])
 
-    goal = st.selectbox(
-        "🎯 Editing Goal",
-        ["Make it concise", "Improve grammar", "Enhance tone", "Make it persuasive","Simplify Language"],
-        key="edit_goal"
-    )
-
-    if st.button("✨ Enhance Text", key="enhance_text"):
+    if st.button("✨ Enhance Text"):
         if raw_text.strip():
-            with st.spinner("Improving text..."):
+            with st.spinner("Improving text with GPT..."):
                 improved = editorial_support(raw_text, goal)
             st.success("✅ Enhanced Text Ready!")
             st.text_area("📘 Refined Output", improved, height=300)
-            get_text_download_link(improved, "edited_text.txt")
         else:
             st.warning("⚠️ Please provide text for editing.")
