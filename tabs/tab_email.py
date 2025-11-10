@@ -54,7 +54,7 @@ def draft_email_with_ai(subject, recipient, tone, details, email_type, length):
 
 def show_email_tab():
     st.subheader("✉️ Smart Email Assistant")
-    st.markdown("Generate context-aware, natural-sounding emails using OpenAI GPT models.")
+    st.markdown("Generate context-aware, natural-sounding emails.")
 
     col1, col2 = st.columns(2)
     with col1:
@@ -98,4 +98,5 @@ def show_email_tab():
 
         with st.expander("📋 Copy Email"):
             st.code(email_output, language="markdown")
+
 
