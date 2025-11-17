@@ -34,23 +34,59 @@ def editorial_support(text, goal):
 
 def show_edit_tab():
     st.subheader("✍️ Editorial Support")
-    st.markdown("Refine and polish your writing.")
+    st.markdown("Refine, improve, or rewrite your text using AI.")
 
-    uploaded_edit = st.file_uploader("📎 Upload a file (.txt, .pdf, .docx)", type=["txt", "pdf", "docx"])
-    default_edit_text = ""
+    # Upload OR paste input
+    uploaded_edit = st.file_uploader(
+        "📎 Upload a file (.txt, .pdf, .docx) OR paste text below",
+        type=["txt", "pdf", "docx"],
+        key="editor_upload"
+    )
 
-    if uploaded_edit:
+    # Extract text when a file is uploaded
+    extracted_text = ""
+    if uploaded_edit is not None:
         with st.spinner("📖 Extracting text..."):
-            default_edit_text = extract_uploaded_text(uploaded_edit)
+            extracted_text = extract_uploaded_text(uploaded_edit)
 
-    raw_text = st.text_area("📝 Enter or paste your text", value=default_edit_text, height=250)
-    goal = st.selectbox("🎯 Editing Goal", [
-        "Make it concise",
-        "Improve grammar",
-        "Enhance tone",
-        "Make it persuasive",
-        "Simplify language"
-    ])
+    # Unified text input area
+    raw_text = st.text_area(
+        "📝 Enter or paste your text (optional if file uploaded)",
+        value=extracted_text,
+        height=250,
+        key="editor_text"
+    )
+
+    # Editing goals
+    goal = st.selectbox(
+        "🎯 Editing Goal",
+        [
+            "Make it concise",
+            "Improve grammar & clarity",
+            "Enhance tone (professional, polite, confident)",
+            "Make it persuasive",
+            "Simplify language",
+            "Rewrite in formal tone",
+            "Rewrite in friendly tone",
+            "Rewrite for clarity",
+        ],
+        key="editor_goal"
+    )
+
+    # Final text to process
+    final_text = raw_text.strip()
+
+    if st.button("✨ Improve Text", key="editor_run"):
+        if not final_text:
+            st.warning("⚠️ Please upload a file or paste text to edit.")
+            return
+
+        with st.spinner("✍️ Enhancing your text..."):
+            improved = edit_with_ai(final_text, goal)  # ← You plug your AI function here
+
+        st.success("✅ Text improved!")
+        st.text_area("📄 Edited Output", improved, height=300)
+
 
     if st.button("✨ Enhance Text"):
         if raw_text.strip():
@@ -60,4 +96,5 @@ def show_edit_tab():
             st.text_area("📘 Refined Output", improved, height=300)
         else:
             st.warning("⚠️ Please provide text for editing.")
+
 
