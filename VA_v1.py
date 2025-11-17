@@ -16,7 +16,7 @@ from pathlib import Path
 from tabs.tab_email import show_email_tab
 from tabs.tab_summary import show_summary_tab
 from tabs.tab_edit import show_edit_tab
-#from tabs.tab_ocr import show_ocr_tab
+from tabs.tab_ocr import show_ocr_tab
 from tabs.tab_about import show_about_tab
 
 # ---------- Streamlit Page Setup ----------
