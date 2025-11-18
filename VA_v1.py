@@ -16,7 +16,7 @@ from pathlib import Path
 from tabs.tab_email import show_email_tab
 from tabs.tab_summary import show_summary_tab
 from tabs.tab_edit import show_edit_tab
-from tabs.tab_ocr import show_ocr_tab
+#from tabs.tab_ocr import show_ocr_tab
 from tabs.tab_about import show_about_tab
 
 # ---------- Streamlit Page Setup ----------
@@ -129,7 +129,7 @@ tabs = st.tabs([
     "Email Drafting",
     "Summarization",
     "Editorial Support",
-    "Image → Text (OCR)",
+    #"Image → Text (OCR)",
     "About"
 ])
 
@@ -142,8 +142,8 @@ with tabs[1]:
 with tabs[2]:
     show_edit_tab()
 
-with tabs[3]:
-    show_ocr_tab()
+#with tabs[3]:
+ #   show_ocr_tab()
 
-with tabs[4]:
+with tabs[3]:
     show_about_tab()

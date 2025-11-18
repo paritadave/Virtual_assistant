@@ -60,20 +60,35 @@ def show_summary_tab():
         type=["txt", "pdf", "docx"],
         key="summary_upload"
     )
-
-    # Extract text from uploaded file
-    default_text = ""
-    if uploaded_file:
+    # Extract text when file is uploaded
+    extracted_text = ""
+    if uploaded_file is not None:
         with st.spinner("📖 Extracting text..."):
-            default_text = extract_uploaded_text(uploaded_file)
+            extracted_text = extract_uploaded_text(uploaded_file)
 
-    # Input text area
+# Show a text area either way:
+# - If file is uploaded: pre-fill with extracted text
+# - If no file: show empty box for manual pasting
     text_input = st.text_area(
-        "📝 Paste long text or report",
-        value=default_text,
+        "📝 Paste long text or report (optional if a file is uploaded)",
+        value=extracted_text,
         height=250,
         key="summary_text"
     )
+
+# Final text to use (either uploaded OR typed)
+    final_text = text_input.strip()
+    
+    if not final_text:
+        st.warning("Please upload a file or paste text to summarize.")
+    else:
+        # Proceed with summarization
+        st.success("Text detected. Ready to summarize!")
+        # Extract text from uploaded file
+        default_text = ""
+        if uploaded_file:
+            with st.spinner("📖 Extracting text..."):
+                default_text = extract_uploaded_text(uploaded_file)
 
     # Summary length options
     length = st.selectbox(
@@ -92,4 +107,5 @@ def show_summary_tab():
             get_text_download_link(summary, "summary.txt")
         else:
             st.warning("⚠️ Please provide text to summarize.")
+
 
