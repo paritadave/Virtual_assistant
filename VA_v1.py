@@ -116,13 +116,12 @@ st.sidebar.markdown(
     • ✉️ Email Drafting – Streamline customer and supplier communication<br>
     • 📄 Document Summarization – Speed up reviews of contracts, reports, and long documents<br>
     • ✍️ Editorial Support – Improve written content (blogs, proposals, marketing)<br>
-    • 🖼️ Image-to-Text Conversion – Digitize invoices, notes, and receipts
     </div>
-    """,
+    """, 
     unsafe_allow_html=True
-)
+) #• 🖼️ Image-to-Text Conversion – Digitize invoices, notes, and receipts
 st.sidebar.markdown("---")
-st.sidebar.success("💡 Tip: Upload a document or image to see the assistant in action!")
+st.sidebar.success("💡 Tip: Upload a document or paste it to see the assistant in action!") #Upload a document or image to see the assistant in action!
 
 # ---------- TABS ----------
 tabs = st.tabs([
