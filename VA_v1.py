@@ -3,24 +3,16 @@ import sys, os
 # Add the directory containing VA_v1.py to the Python path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-#import os, sys
-print("Current working directory:", os.getcwd())
-print("Python search paths:", sys.path)
 import streamlit as st
 import base64
 from pathlib import Path
-
-
-
 # Import tab modules
 from tabs.tab_email import show_email_tab
 from tabs.tab_summary import show_summary_tab
 from tabs.tab_edit import show_edit_tab
-#from tabs.tab_ocr import show_ocr_tab
 from tabs.tab_about import show_about_tab
 
 # ---------- Streamlit Page Setup ----------
-import streamlit as st
 
 st.set_page_config(
     page_title="AI Virtual Assistant",
@@ -28,7 +20,8 @@ st.set_page_config(
     page_icon="🤖",
     initial_sidebar_state="collapsed"
 )
-
+print("Current working directory:", os.getcwd())
+print("Python search paths:", sys.path)
 # ==========================================================
 # 🌙 Dark Theme + Styling
 # ==========================================================
